@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/skatpgusskat/manager#readme",
   "dependencies": {
-    "dotenv": "^4.0.0"
+    "dotenv": "^4.0.0",
+    "extfs": "^0.0.7"
   }
 }

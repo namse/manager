@@ -1,7 +1,16 @@
 require('dotenv').config();
-const copyNewFiles = require('./copyNewFiles');
+const path = require('path');
+const copyWritingFinishedNewFiles = require('./copyWritingFinishedNewFiles');
 
-setInterval(() => copyNewFiles(
-  process.env.ENCODED_DIRECTORY,
-  process.env.DESTINATION_DIRECTORY),
+const encodedDirectory = path.resolve(process.env.ENCODED_DIRECTORY);
+const destDirectory = path.resolve(process.env.DESTINATION_DIRECTORY);
+
+console.log(encodedDirectory, destDirectory, process.env.INTERVAL);
+
+copyWritingFinishedNewFiles(
+  encodedDirectory,
+  destDirectory);
+setInterval(() => copyWritingFinishedNewFiles(
+  encodedDirectory,
+  destDirectory),
 process.env.INTERVAL);

@@ -3,13 +3,16 @@ const fs = require('fs');
 let previousFilenamesOfSource;
 
 
-const getFiles = () => new Promise((resolve, reject) =>
+const getFiles = () => new Promise((resolve, reject) =>{
+  console.log('hi');
   fs.readdir(directory, (err, filenames) => {
     if (err) {
+      console.log(`fail to get files from ${directory}`);
       return reject(err);
     }
+    console.log(`success to get files from ${directory}`, filenames);
     return resolve(filenames);
-  }));
+  })});
 
 const copyFiles = (filenames, source, destination) => Promise.all([
   filenames.map(filename => new Promise((resolve, reject) => {
@@ -34,8 +37,12 @@ module.exports = (source, dest) => Promise.all([
     filenamesOfSource,
     filenamesOfDest,
   ] = results;
+  console.log('previousFilenamesOfSource', previousFilenamesOfSource)
+  console.log('filenamesOfSource', filenamesOfSource)
+  console.log('filenamesOfDest', filenamesOfDest)
 
   if (!previousFilenamesOfSource) {
+    console.log('previousFilenamesOfSource is null')
     previousFilenamesOfSource = filenamesOfSource;
     return;
   }
@@ -43,12 +50,14 @@ module.exports = (source, dest) => Promise.all([
   if (filenamesOfSource.length == previousFilenamesOfSource.length
     && filenamesOfSource.every(filenameOfSource =>
       previousFilenamesOfSource.includes(filenameOfSource))) {
+    console.log('filenamesOfSource not changed')
     return;
   }
 
   const targets = previousFilenamesOfSource.filter(previousFilenameOfEncoded =>
     !filenamesOfDest.includes(previousFilenameOfEncoded)
   );
+  console.log('targets', targets);
   return copyFiles(targets, source, dest)
   .then(() => {
     previousFilenamesOfSource = filenamesOfSource;
