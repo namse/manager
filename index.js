@@ -1,3 +1,4 @@
+require('dotenv').config();
 const copyNewFiles = require('./copyNewFiles');
 
 setInterval(() => copyNewFiles(

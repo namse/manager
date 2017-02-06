@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-let previousfilenamesOfSource;
+let previousFilenamesOfSource;
 
 
 const getFiles = () => new Promise((resolve, reject) =>
@@ -35,15 +35,22 @@ module.exports = (source, dest) => Promise.all([
     filenamesOfDest,
   ] = results;
 
-  if (!previousfilenamesOfSource) {
-    previousfilenamesOfSource = filenamesOfSource;
+  if (!previousFilenamesOfSource) {
+    previousFilenamesOfSource = filenamesOfSource;
     return;
   }
 
-  const targets = previousfilenamesOfSource.filter(previousFilenameOfEncoded =>
+  if (filenamesOfSource.length == previousFilenamesOfSource.length
+    && filenamesOfSource.every(filenameOfSource =>
+      previousFilenamesOfSource.includes(filenameOfSource))) {
+    return;
+  }
+
+  const targets = previousFilenamesOfSource.filter(previousFilenameOfEncoded =>
     !filenamesOfDest.includes(previousFilenameOfEncoded)
   );
-  return copyFiles(targets,
-    source,
-    dest);
+  return copyFiles(targets, source, dest)
+  .then(() => {
+    previousFilenamesOfSource = filenamesOfSource;
+  });
 })

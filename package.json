@@ -13,5 +13,8 @@
   "bugs": {
     "url": "https://github.com/skatpgusskat/manager/issues"
   },
-  "homepage": "https://github.com/skatpgusskat/manager#readme"
+  "homepage": "https://github.com/skatpgusskat/manager#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0"
+  }
 }
